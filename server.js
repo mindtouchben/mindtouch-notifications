@@ -25,8 +25,6 @@ connection.connect(function(err) {
 
 app.use(bodyParser.json({limit: '50mb'}));
 
-app.use('/files', express.static('routes/tmp'));
-
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect

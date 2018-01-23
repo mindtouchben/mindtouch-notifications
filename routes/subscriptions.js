@@ -83,6 +83,8 @@ router.post('/', (req, res) => {
                 }
             }
         })
+    } else {
+        res.json(req.body);
     }
 })
 
