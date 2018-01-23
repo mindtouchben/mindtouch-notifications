@@ -94,6 +94,8 @@ router.delete('/', (req, res) => {
     var pageid = req.body.pageid;
     var pageurl = req.body.pageurl;
 
+    console.log(userid, useremail, pageid, pageurl);
+
     // verify email is valid
 
     if (userid != undefined && useremail != undefined && pageid != undefined && pageurl != undefined) {
