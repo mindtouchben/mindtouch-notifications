@@ -3,6 +3,7 @@ const request = require('request');
 
 var mysql = require('mysql');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 
 const port = process.env.PORT || 3000; 
 
