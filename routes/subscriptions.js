@@ -55,15 +55,13 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    var userid = req.body.userid;
-    var useremail = req.body.useremail;
-    var pageid = req.body.pageid;
-    var pageurl = req.body.pageurl;
+    var subID = req.query.id;
+    var userid = req.query.userid;
 
     // verify email is valid
-    if (userid != undefined && useremail != undefined && pageid != undefined && pageurl != undefined) {
+    if (userid != undefined && subID != undefined) {
         // verify subscriptions does not exsist
-        var query = `SELECT * FROM notifications WHERE userid = '${userid}' AND pageid ='${pageid}' LIMIT 1`;
+        var query = `SELECT * FROM notifications WHERE userid = '${userid}' AND id ='${subID}' LIMIT 1`;
         connection.query(query, function (error, results, fields) {
             if (error) {
                 console.log(error);
