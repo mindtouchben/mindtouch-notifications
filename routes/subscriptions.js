@@ -55,13 +55,15 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    var subID = req.query.id;
-    var userid = req.query.userid;
+    var userid = req.body.userid;
+    var useremail = req.body.useremail;
+    var pageid = req.body.pageid;
+    var pageurl = req.body.pageurl;
 
     // verify email is valid
-    if (userid != undefined && subID != undefined) {
+    if (userid != undefined && useremail != undefined && pageid != undefined && pageurl != undefined) {
         // verify subscriptions does not exsist
-        var query = `SELECT * FROM notifications WHERE userid = '${userid}' AND id ='${subID}' LIMIT 1`;
+        var query = `SELECT * FROM notifications WHERE userid = '${userid}' AND pageid ='${pageid}' LIMIT 1`;
         connection.query(query, function (error, results, fields) {
             if (error) {
                 console.log(error);
@@ -87,18 +89,12 @@ router.post('/', (req, res) => {
 })
 
 router.delete('/', (req, res) => {
-    var userid = req.body.userid;
-    var useremail = req.body.useremail;
-    var pageid = req.body.pageid;
-    var pageurl = req.body.pageurl;
+    var subID = req.query.id;
+    var userid = req.query.userid;
 
-    console.log(req.body);
-
-    // verify email is valid
-
-    if (userid != undefined && useremail != undefined && pageid != undefined && pageurl != undefined) {
+    if (userid != undefined && subID != undefined) {
         // remove data from data store
-        var query = `DELETE FROM notifications WHERE userid = ${userid} AND pageid =${pageid} AND email = '${useremail}' LIMIT 1`;
+        var query = `DELETE FROM notifications WHERE userid = ${userid} AND id = '${subID}' LIMIT 1`;
         console.log(query);
         connection.query(query, function (error, results, fields) {
             if (error) {
