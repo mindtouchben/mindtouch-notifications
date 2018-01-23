@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.185.0",
+    "cors": "^2.8.4",
     "email-validator": "^1.1.1",
     "express": "^4.16.2",
     "lodash": "^4.17.4",
