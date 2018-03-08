@@ -13,6 +13,7 @@ router.post('/', (req, res) => {
     var pageid = req.body.pageid;
     var pageurl = req.body.pageurl;
     var pageTitle = req.body.pageTitle;
+    var lastUpdated = req.body.lastUpdated;
     var updateMessage = req.body.msg != undefined ? req.body.msg : '';
 
     console.log()
@@ -29,9 +30,13 @@ router.post('/', (req, res) => {
                     var template = fs.readFileSync(__dirname + '/../templates/email.html',{encoding:'utf-8'}).toString();
 
                     // find and replace data in email template
-                    template = template.replace('{{update-message}}', updateMessage);
+                    template = template.replace('{{username}}', results[0].username);
+                    template = template.replace('{{update-date}}', results[0].lastUpdated);
+                    template = template.replace('{{updateMessage}}', updateMessage);
                     template = template.replace('{{update-link}}', pageurl);
                     template = template.replace('{{update-pageTitle}}', pageTitle);
+
+                    console.log(template);
 
                     // loop through all emails and send update
                     var emails = [];
