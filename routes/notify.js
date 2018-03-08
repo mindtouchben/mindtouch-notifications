@@ -15,6 +15,8 @@ router.post('/', (req, res) => {
     var pageTitle = req.body.pageTitle;
     var updateMessage = req.body.msg != undefined ? req.body.msg : '';
 
+    console.log()
+
     if (pageid != undefined && pageurl != undefined && pageTitle != undefined) {
         // get all users by email subscribed to the page
         var query = `SELECT * FROM notifications WHERE pageid ='${pageid}' AND pageurl = '${pageurl}'`;
