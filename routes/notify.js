@@ -27,59 +27,66 @@ router.post('/', (req, res) => {
             } else {
                 if (results.length > 0 && results[0].pageurl == pageurl) {
                     // load email template
-                    var template = fs.readFileSync(__dirname + '/../templates/email.html',{encoding:'utf-8'}).toString();
+                    
 
                     // find and replace data in email template
-                    template = template.replace('{{username}}', results[0].username);
-                    template = template.replace('{{update-date}}', lastUpdated);
-                    template = template.replace('{{updateMessage}}', updateMessage);
-                    template = template.replace('{{update-link}}', pageurl);
-                    template = template.replace('{{update-pageTitle}}', pageTitle);
-
-                    console.log(template);
+                    
 
                     // loop through all emails and send update
                     var emails = [];
                     for (var x in results) {
                         console.log('Sending email to:', results[x].email);
-                        emails.push(results[x].email);
+
+                        var template = fs.readFileSync(__dirname + '/../templates/email.html',{encoding:'utf-8'}).toString();
+
+                        template = template.replace('{{username}}', results[x].username);
+                        template = template.replace('{{update-date}}', lastUpdated);
+                        template = template.replace('{{updateMessage}}', updateMessage);
+                        template = template.replace('{{update-link}}', pageurl);
+                        template = template.replace('{{update-pageTitle}}', pageTitle);
+
+                        var params = {
+                            Destination: { /* required */
+                                ToAddresses: results[x].email
+                            },
+                            Message: { /* required */
+                                Body: { /* required */
+                                    Html: {
+                                        Charset: "UTF-8",
+                                        Data: template
+                                    },
+                                },
+                                Subject: {
+                                    Charset: 'UTF-8',
+                                    Data: 'Test email'
+                                }
+                            },
+                            Source: 'benr@mindtouch.com', /* required */
+                            ReplyToAddresses: [
+                                'benr@mindtouch.com'
+                            ]
+                        };   
+                        // Create the promise and SES service object
+                        var sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+    
+                        sendPromise.then(
+                            function(data) {
+                                console.log(data.MessageId);
+                                
+                                var query = `UPDATE notifications SET lastupdate = '${lastUpdated}' WHERE id = ${results[x].id};`
+                                connection.query(query, function (error, results, fields) {
+                                    console.log(error, results);
+                                });
+                            }
+                        ).catch(
+                            function(err) {
+                                console.log(err, err.stack);
+                                res.status(400).send()
+                            }
+                        )
                     }
 
-                    var params = {
-                        Destination: { /* required */
-                            ToAddresses: emails
-                        },
-                        Message: { /* required */
-                            Body: { /* required */
-                                Html: {
-                                    Charset: "UTF-8",
-                                    Data: template
-                                },
-                            },
-                            Subject: {
-                                Charset: 'UTF-8',
-                                Data: 'Test email'
-                            }
-                        },
-                        Source: 'benr@mindtouch.com', /* required */
-                        ReplyToAddresses: [
-                            'benr@mindtouch.com'
-                        ]
-                    };   
-                    // Create the promise and SES service object
-                    var sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
-
-                    sendPromise.then(
-                        function(data) {
-                            console.log(data.MessageId);
-                            res.send('send emails complete');
-                        }
-                    ).catch(
-                        function(err) {
-                            console.log(err, err.stack);
-                            res.status(400).send()
-                        }
-                    )
+                    
 
                     
                 } else {
