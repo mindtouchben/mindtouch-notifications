@@ -86,7 +86,7 @@ router.post('/', (req, res) => {
                         )
                     }
 
-                    
+                    res.send('All emails sent');
 
                     
                 } else {
