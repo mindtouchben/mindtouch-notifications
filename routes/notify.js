@@ -47,7 +47,7 @@ router.post('/', (req, res) => {
 
                         var params = {
                             Destination: { /* required */
-                                ToAddresses: results[x].email
+                                ToAddresses: [results[x].email]
                             },
                             Message: { /* required */
                                 Body: { /* required */
