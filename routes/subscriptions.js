@@ -60,6 +60,7 @@ router.post('/', (req, res) => {
     var username = req.body.username
     var pageid = req.body.pageid;
     var pageurl = req.body.pageurl;
+    var pagetitle = req.body.pagetitle;
 
     // verify email is valid
     if (userid != undefined && useremail != undefined && pageid != undefined && pageurl != undefined) {
