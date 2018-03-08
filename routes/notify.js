@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
 
                     // find and replace data in email template
                     template = template.replace('{{username}}', results[0].username);
-                    template = template.replace('{{update-date}}', results[0].lastUpdated);
+                    template = template.replace('{{update-date}}', lastUpdated);
                     template = template.replace('{{updateMessage}}', updateMessage);
                     template = template.replace('{{update-link}}', pageurl);
                     template = template.replace('{{update-pageTitle}}', pageTitle);
