@@ -57,6 +57,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     var userid = req.body.userid;
     var useremail = req.body.useremail;
+    var username = req.body.username
     var pageid = req.body.pageid;
     var pageurl = req.body.pageurl;
 
@@ -71,8 +72,8 @@ router.post('/', (req, res) => {
                 if (results.length > 0 && results[0].email == useremail) {
                     res.status(400).send('Record already exsists');
                 } else {
-                    query = `INSERT INTO notifications (userid, email, pageid, pageurl) 
-                        VALUES (${userid}, '${useremail}', ${pageid}, '${pageurl}');`
+                    query = `INSERT INTO notifications (userid, email, username, pageid, pageurl) 
+                        VALUES (${userid}, '${useremail}', '${username}', ${pageid}, '${pageurl}');`
                         connection.query(query, function (error, results, fields) {
                             if (results.affectedRows > 0) {
                                 res.send('Added new record');
