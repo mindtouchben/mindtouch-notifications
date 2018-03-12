@@ -44,6 +44,7 @@ router.post('/', (req, res) => {
                         template = template.replace('{{updateMessage}}', updateMessage);
                         template = template.replace('{{update-link}}', pageurl);
                         template = template.replace('{{update-pageTitle}}', pageTitle);
+                        template = template.replace('{{update-pageTitle}}', pageTitle);
 
                         var params = {
                             Destination: { /* required */
