@@ -9,6 +9,14 @@ AWS.config.update({
     secretAccessKey: process.env.S3_SECRET,
     region: 'us-east-1'});
 
+function unquote(str, quoteChar) {
+    quoteChar = quoteChar || "'";
+    if (str[0] === quoteChar && str[str.length - 1] === quoteChar)
+        return str.slice(1, str.length - 1);
+    else return str;
+    };
+  
+
 router.post('/', (req, res) => {
     var pageid = req.body.pageid;
     var pageurl = req.body.pageurl;
@@ -42,9 +50,9 @@ router.post('/', (req, res) => {
                         template = template.replace('{{username}}', results[x].username);
                         template = template.replace('{{update-date}}', lastUpdated);
                         template = template.replace('{{updateMessage}}', updateMessage);
-                        template = template.replace('{{update-link}}', pageurl);
-                        template = template.replace('{{update-pageTitle}}', pageTitle);
-                        template = template.replace('{{update-pageTitle}}', pageTitle);
+                        template = template.replace('{{update-link}}', unquote(pageurl, "'"));
+                        template = template.replace('{{update-pageTitle}}', unquote(pageTitle, "'"));
+                        template = template.replace('{{update-pageTitle}}', unquote(pageTitle, "'"));
 
                         var params = {
                             Destination: { /* required */
