@@ -24,7 +24,7 @@ connection.connect(function(err) {
     console.log('connected as id ' + connection.threadId);
 });
 
-app.use(express.static(public));
+app.use(express.static('static'));
 app.use(bodyParser.json({limit: '50mb'}));
 
 app.use(cors());
