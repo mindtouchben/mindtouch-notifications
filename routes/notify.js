@@ -28,19 +28,12 @@ router.post('/', (req, res) => {
 
     if (pageid != undefined && pageurl != undefined && pageTitle != undefined) {
         // get all users by email subscribed to the page
-        var query = `SELECT * FROM notifications WHERE pageid ='${pageid}' AND pageurl = '?'`;
-        connection.query(query, [pageurl], function (error, results, fields) {
+        var query = `SELECT * FROM notifications WHERE pageid ='${pageid}' AND pageurl = "${pageurl}"`;
+        connection.query(query, function (error, results, fields) {
             if (error) {
                 console.log(error);
             } else {
                 if (results.length > 0 && results[0].pageurl == pageurl) {
-                    // load email template
-                    
-
-                    // find and replace data in email template
-                    
-
-                    // loop through all emails and send update
                     var emails = [];
                     for (var x in results) {
                         console.log('Sending email to:', results[x].email);
