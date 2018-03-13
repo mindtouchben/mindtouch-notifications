@@ -28,8 +28,8 @@ router.post('/', (req, res) => {
 
     if (pageid != undefined && pageurl != undefined && pageTitle != undefined) {
         // get all users by email subscribed to the page
-        var query = `SELECT * FROM notifications WHERE pageid ='${pageid}' AND pageurl = '${pageurl}'`;
-        connection.query(query, function (error, results, fields) {
+        var query = `SELECT * FROM notifications WHERE pageid ='${pageid}' AND pageurl = '?'`;
+        connection.query(query, [pageurl], function (error, results, fields) {
             if (error) {
                 console.log(error);
             } else {
