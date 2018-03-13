@@ -76,11 +76,17 @@ router.post('/', (req, res) => {
                     query = `INSERT INTO notifications (userid, email, username, pageid, pageurl, pagetitle) 
                         VALUES (${userid}, '${useremail}', '${username}', ${pageid}, '${pageurl}', '${pagetitle}');`
                         connection.query(query, function (error, results, fields) {
-                            if (results.affectedRows != undefined && results.affectedRows > 0) {
+                            if (results.affectedRows == undefined) {
+                                console.log(error);
+                            } else if (results.affectedRows > 0) {
                                 res.send('Added new record');
-                            } else {
-                                res.send('Something went wrong');
                             }
+
+                            // if (results.affectedRows != undefined && results.affectedRows > 0) {
+                            //     res.send('Added new record');
+                            // } else {
+                            //     res.send('Something went wrong');
+                            // }
                         })
                 }
             }
