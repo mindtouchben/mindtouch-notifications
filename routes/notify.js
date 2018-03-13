@@ -33,6 +33,7 @@ router.post('/', (req, res) => {
             if (error) {
                 console.log(error);
             } else {
+                console.log(results);
                 if (results.length > 0 && results[0].pageurl == pageurl) {
                     var emails = [];
                     for (var x in results) {
