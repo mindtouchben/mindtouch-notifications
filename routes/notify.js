@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
                 console.log(error);
             } else {
                 console.log(results);
-                if (results.length > 0 && results[0].pageurl == pageurl) {
+                if (results.length > 0) {
                     var emails = [];
                     for (var x in results) {
                         console.log('Sending email to:', results[x].email);
