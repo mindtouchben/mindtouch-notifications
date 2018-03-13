@@ -24,16 +24,13 @@ connection.connect(function(err) {
     console.log('connected as id ' + connection.threadId);
 });
 
+app.use(express.static(public));
 app.use(bodyParser.json({limit: '50mb'}));
 
 app.use(cors());
 
 var subscriptions = require('./routes/subscriptions');
 var notify = require('./routes/notify');
-
-app.get('/', (req, res) => {
-
-});
 
 app.use('/@api/subscriptions', subscriptions(connection));
 app.use('/@api/notify', notify(connection));
