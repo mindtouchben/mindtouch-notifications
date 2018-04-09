@@ -9,6 +9,14 @@ AWS.config.update({
     secretAccessKey: process.env.S3_SECRET,
     region: 'us-east-1'});
 
+function unquote(str, quoteChar) {
+    quoteChar = quoteChar || "'";
+    if (str[0] === quoteChar && str[str.length - 1] === quoteChar)
+        return str.slice(1, str.length - 1);
+    else return str;
+    };
+  
+
 router.post('/', (req, res) => {
     var pageid = req.body.pageid;
     var pageurl = req.body.pageurl;
@@ -20,19 +28,13 @@ router.post('/', (req, res) => {
 
     if (pageid != undefined && pageurl != undefined && pageTitle != undefined) {
         // get all users by email subscribed to the page
-        var query = `SELECT * FROM notifications WHERE pageid ='${pageid}' AND pageurl = '${pageurl}'`;
+        var query = `SELECT * FROM notifications WHERE pageid ='${pageid}'`;
         connection.query(query, function (error, results, fields) {
             if (error) {
                 console.log(error);
             } else {
-                if (results.length > 0 && results[0].pageurl == pageurl) {
-                    // load email template
-                    
-
-                    // find and replace data in email template
-                    
-
-                    // loop through all emails and send update
+                console.log(results);
+                if (results.length > 0) {
                     var emails = [];
                     for (var x in results) {
                         console.log('Sending email to:', results[x].email);
@@ -42,8 +44,9 @@ router.post('/', (req, res) => {
                         template = template.replace('{{username}}', results[x].username);
                         template = template.replace('{{update-date}}', lastUpdated);
                         template = template.replace('{{updateMessage}}', updateMessage);
-                        template = template.replace('{{update-link}}', pageurl);
-                        template = template.replace('{{update-pageTitle}}', pageTitle);
+                        template = template.replace('{{update-link}}', unquote(pageurl, "'"));
+                        template = template.replace('{{update-pageTitle}}', unquote(pageTitle, "'"));
+                        template = template.replace('{{update-pageTitle}}', unquote(pageTitle, "'"));
 
                         var params = {
                             Destination: { /* required */

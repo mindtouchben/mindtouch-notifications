@@ -74,13 +74,20 @@ router.post('/', (req, res) => {
                     res.status(400).send('Record already exsists');
                 } else {
                     query = `INSERT INTO notifications (userid, email, username, pageid, pageurl, pagetitle) 
-                        VALUES (${userid}, '${useremail}', '${username}', ${pageid}, '${pageurl}', '${pagetitle}');`
-                        connection.query(query, function (error, results, fields) {
-                            if (results.affectedRows > 0) {
+                        VALUES (${userid}, '${useremail}', '${username}', ${pageid}, "?", "?");`
+                        connection.query(query, [pageurl, pagetitle], function (error, results, fields) {
+                            if (results == undefined) {
+                                console.log(query);
+                                console.log(error);
+                            } else if (results.affectedRows > 0) {
                                 res.send('Added new record');
-                            } else {
-                                res.send('Something went wrong');
                             }
+
+                            // if (results.affectedRows != undefined && results.affectedRows > 0) {
+                            //     res.send('Added new record');
+                            // } else {
+                            //     res.send('Something went wrong');
+                            // }
                         })
                 }
             }

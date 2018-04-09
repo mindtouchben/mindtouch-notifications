@@ -31,10 +31,6 @@ app.use(cors());
 var subscriptions = require('./routes/subscriptions');
 var notify = require('./routes/notify');
 
-app.get('/', (req, res) => {
-
-});
-
 app.use('/@api/subscriptions', subscriptions(connection));
 app.use('/@api/notify', notify(connection));
 
